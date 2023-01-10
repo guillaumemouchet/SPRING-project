@@ -2,7 +2,6 @@ package ch.hearc.jee2022.catalog.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
