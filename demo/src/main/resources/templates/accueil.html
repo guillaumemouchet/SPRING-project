@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Accueil - Gestion de Collection</title>
+	<!--  CSS Bootstrap Dependencies  -->
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css} " />
+</head>
+
+
+<body>
+
+	<div class="container">
+		<!-- Nav Bar -->
+		<div th:replace="~{fragment/navbar :: navbar-list}"></div>
+	</div>
+
+
+
+	<!-- choix fragment -->
+	<div th:if="${showNew}">
+		<div th:replace="~{fragment/Book :: new-book}"></div>
+	</div>
+	<div th:if="${showAcc}">
+		<div class="container">
+			<h1>Bienvenue</h1>
+			<p>Bienvenue sur le projet fait dans le cadre du cours de SPRING pendant le semester d'automne.<br>
+				Ce projet à pour but d'aider les utilisateurs à connaître leur collection de livre, ainsi que de
+				permettre
+				aux autres utilisateurs de découvrir de nouvelle pépite littéraire.
+			</p>
+		</div>
+	</div>
+
+	<!--  JS Bootstrap Dependencies  -->
+	<script th:src="@{/webjars/popper.js/2.11.6/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!-- Formulaire pour ajouter ou modifier un Livre -->
+<div th:fragment="new-book">
+
+	<form action="#" th:action="@{/save-book}" th:object="${book}" method="post">
+		<div class="row">
+			<div class="col-12 col-lg-8 mt-4 offset-0 offset-lg-2">
+				<div class="card">
+					<div class="card-header">
+						<h1 th:if="${isNew}">Insertion d'un Livre</h1>
+						<h1 th:if="${isEdit}">Modification d'un Livre</h1>
+					</div>
+
+					<div class="card-body">
+						<div class="form-row">
+							<div th:if="${isEdit}" class="form-group col-12">
+								<label for="id" th:text="Id"></label>
+								<input type="text" class="form-control" th:required="required" readonly
+									th:field="*{id}" />
+							</div>
+							<div class="form-group col-12">
+								<label for="name" th:text="Nom"></label>
+								<input type="text" class="form-control" th:required="required" th:field="*{name}" />
+							</div>
+
+							<div class="form-group col-12">
+								<label for="Author" th:text="Author"></label>
+								<input type="text" class="form-control" th:required="required" th:field="*{author}" />
+							</div>
+
+							<div class="form-group col-12">
+								<label for="Editor" th:text="Editor"></label>
+								<input type="text" class="form-control" th:required="required" th:field="*{editor}" />
+							</div>
+
+							<div class="form-group col-12">
+								<label for="Release" th:text="Release"></label>
+								<input type="date" class="form-control" th:required="required"
+									th:field="*{release}" />
+							</div>
+
+							<input type="hidden" name="type" th:if="${isNew}" th:value="new" />
+							<input type="hidden" name="type" th:if="${isEdit}" th:value="edit" />
+							<button type="submit" class="btn btn-outline-primary mt-3">Enregistrer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+
+
+<!-- Affichage des Livres -->
+
+<div th:fragment="book-list">
+	<div class="row">
+
+		<div class="col-md-10 offset-md-1">
+
+			<div class="mt-4 p-5 bg-light border rounded-3">
+				<h1>Liste des Livres</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Nom</th>
+							<th scope="col">Author</th>
+							<th scope="col">Editor</th>
+							<th scope="col">Release</th>
+							<th scope="col" th:if="${isGlobal}" />
+
+						</tr>
+					</thead>
+					<tr th:each="book: ${books}">
+						<td th:text="${book.name}" />
+						<td th:text="${book.author}" />
+						<td th:text="${book.editor}" />
+						<td th:text="${book.release}" />
+						<td th:if="${isGlobal}">
+							<form action="#" th:action="@{/add-collection}" th:object="${book}" method="post">
+								<input type="hidden" th:value="${book.id}" name="id" />
+								<button type="submit" class="btn btn-success">Ajouter</button>
+							</form>
+						</td>
+						<td th:if="!${isGlobal}">
+							<form action="#" th:action="@{/delete-user-book}" th:object="${book}" method="post">
+								<input type="hidden" th:value="${book.id}" name="id" />
+								<button type="submit" class="btn btn-danger">Enlever</button>
+							</form>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
