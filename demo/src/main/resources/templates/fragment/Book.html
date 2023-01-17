@@ -94,15 +94,18 @@
 						</td>
 					</tr>
 				</table>
-				<div th:if="${isGlobal}">
-				<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
-					<a href="/show-books" th:href="@{/show-books/{pageNo}(pageNo=${i})}" th:text="${i}"></a>
-				</th:block>
-				</div>
-				<div th:if="!${isGlobal}">
-				<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
-					<a href="/show-user-books" th:href="@{/show-user-books/{pageNo}(pageNo=${i})}" th:text="${i}"></a>
-				</th:block>
+				<div th:if="${number_of_page}>0">
+					<div th:if="${isGlobal}">
+						<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
+							<a href="/show-books" th:href="@{/show-books/{pageNo}(pageNo=${i})}" th:text="${i}"></a>
+						</th:block>
+					</div>
+					<div th:if="!${isGlobal}">
+						<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
+							<a href="/show-user-books" th:href="@{/show-user-books/{pageNo}(pageNo=${i})}"
+								th:text="${i}"></a>
+						</th:block>
+					</div>
 				</div>
 			</div>
 

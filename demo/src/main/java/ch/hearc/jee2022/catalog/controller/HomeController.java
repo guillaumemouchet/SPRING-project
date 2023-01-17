@@ -186,11 +186,16 @@ public class HomeController {
 	public String showBooks(Model model, @PathVariable int pageNo) {
 		model.addAttribute("userSession", userSession);
 
-		model.addAttribute("books", catalogService.getAllBooksFromCatalog(pageNo));
 		int numberofbooks = catalogService.getAllBooksFromCatalog().size();
 		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
 		System.out.println(numberofpages);
+		if(numberofpages<pageNo)
+		{
+			return "redirect:/show-books/0";
+		}
+		model.addAttribute("books", catalogService.getAllBooksFromCatalog(pageNo));
+
 		model.addAttribute("number_of_page", numberofpages);
 
 		model.addAttribute("isGlobal", Boolean.TRUE);
@@ -210,6 +215,11 @@ public class HomeController {
 		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
 		System.out.println(numberofpages);
+		if(numberofpages<pageNo)
+		{
+			return "redirect:/show-user-books/0";
+		}
+		
 		model.addAttribute("number_of_page", numberofpages);
 		model.addAttribute("books",
 				catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user")), pageNo));
