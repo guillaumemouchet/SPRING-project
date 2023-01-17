@@ -190,7 +190,7 @@ public class HomeController {
 		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
 		System.out.println(numberofpages);
-		if(numberofpages<pageNo)
+		if(pageNo >= numberofpages)
 		{
 			return "redirect:/show-books/0";
 		}
@@ -215,7 +215,7 @@ public class HomeController {
 		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
 		System.out.println(numberofpages);
-		if(numberofpages<pageNo)
+		if(pageNo >= numberofpages)
 		{
 			return "redirect:/show-user-books/0";
 		}
