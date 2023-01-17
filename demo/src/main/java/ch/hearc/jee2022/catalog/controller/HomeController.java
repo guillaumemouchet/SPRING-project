@@ -31,7 +31,6 @@ public class HomeController {
 			first = Boolean.FALSE;
 			catalogService.startApplication();
 		}
-		System.out.println();
 		model.addAttribute("userSession", userSession);
 		model.addAttribute("showAcc", Boolean.TRUE);
 		model.addAttribute("showNew", Boolean.FALSE);
@@ -41,7 +40,6 @@ public class HomeController {
 	@GetMapping(value = { "/login" })
 	public String showLoginPage(Model model) {
 
-		System.out.println(userSession.getAttribute("user"));
 		if (userSession.getAttribute("user") == null) {
 			model.addAttribute("utilisateur", new Utilisateur());
 
@@ -93,10 +91,7 @@ public class HomeController {
 	public String saveUserCreate(@ModelAttribute Utilisateur user, BindingResult errors, Model model,
 			@RequestParam String conPassword) {
 		model.addAttribute("userSession", userSession);
-		System.out.println("Create");
-		System.out.println(user.getName());
-		System.out.println(user.getPassword());
-		System.out.println(conPassword);
+
 		// Controller qu'il existe
 
 		// new Utilisateur // Controler les mots de passes
@@ -113,23 +108,19 @@ public class HomeController {
 	@PostMapping(value = "/save-user")
 	public String saveUserLogin(@ModelAttribute Utilisateur user, BindingResult errors, Model model) {
 		model.addAttribute("userSession", userSession);
-		System.out.println("Login");
-		System.out.println(user.getName());
-		System.out.println(user.getPassword());
 
 		Utilisateur utilisateur = null;
 		try {
 			utilisateur = catalogService.getUserByName(user.getName());
-			System.out.println(utilisateur.getName());
 
 		} catch (Exception e) { // User don't exist so no connection }
-			System.out.println("NO");
+			System.out.println("No");
 			return "redirect:/login";
 
 		}
 		if (utilisateur.getPassword().equals(user.getPassword())) {
 			// C'set les bon mots de passes
-			System.out.println("CreateSession");
+			System.out.println("Create Session");
 
 			userSession.setAttribute("user", utilisateur.getId());
 		}
@@ -187,11 +178,8 @@ public class HomeController {
 		model.addAttribute("userSession", userSession);
 
 		int numberofbooks = catalogService.getAllBooksFromCatalog().size();
-		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
-		System.out.println(numberofpages);
-		if(pageNo >= numberofpages)
-		{
+		if (pageNo >= numberofpages) {
 			return "redirect:/show-books/0";
 		}
 		model.addAttribute("books", catalogService.getAllBooksFromCatalog(pageNo));
@@ -207,19 +195,15 @@ public class HomeController {
 		model.addAttribute("userSession", userSession);
 		model.addAttribute("isGlobal", Boolean.FALSE);
 
-		
 		if (userSession.getAttribute("user") == null) {
 			return "redirect:/accueil";
 		}
 		int numberofbooks = catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user"))).size();
-		System.out.println(numberofbooks);
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
-		System.out.println(numberofpages);
-		if(pageNo >= numberofpages)
-		{
+		if (pageNo >= numberofpages) {
 			return "redirect:/show-user-books/0";
 		}
-		
+
 		model.addAttribute("number_of_page", numberofpages);
 		model.addAttribute("books",
 				catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user")), pageNo));

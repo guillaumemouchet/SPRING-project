@@ -30,7 +30,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	HttpSession userSession;
 
-	// Commun
+	// Used for massive tests for pagination
 	public void startApplication() {
 
 		// create a Book
@@ -61,7 +61,29 @@ public class CatalogServiceImpl implements CatalogService {
 		// update the student
 		utilisateurRepository.save(user);
 	}
+	/* Décommenter pour le rendu final !!
+	public void startApplication() {
 
+		// create a Book
+		Book book = new Book("Maniefestation en France ?", "François Beaujoli", "Payot", LocalDate.now());
+		Book book2 = new Book("Chevalier D'émeraude 1", "Mireille Magie", "Le rat conteur", LocalDate.now());
+		Book book3 = new Book("La Quête Ewilan", "Miguel Richard", "A son conte", LocalDate.now());
+		// save the Book
+		bookRepository.saveAll(Arrays.asList(book, book2, book3));
+
+		Utilisateur user = new Utilisateur("Guillaume", "123");
+
+		System.out.println(user);
+		// save courses
+		utilisateurRepository.save(user);
+
+		// add courses to the student
+		user.getBooks().addAll(Arrays.asList(book, book2));
+
+		// update the student
+		utilisateurRepository.save(user);
+	}*/
+	
 	// Book
 	public void addBookToCatalog(Book book) {
 		bookRepository.save(book);
