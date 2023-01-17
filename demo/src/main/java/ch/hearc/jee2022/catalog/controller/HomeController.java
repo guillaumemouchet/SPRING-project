@@ -179,6 +179,7 @@ public class HomeController {
 
 		int numberofbooks = catalogService.getAllBooksFromCatalog().size();
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
+
 		if (pageNo >= numberofpages) {
 			return "redirect:/show-books/0";
 		}
@@ -200,7 +201,7 @@ public class HomeController {
 		}
 		int numberofbooks = catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user"))).size();
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
-		if (pageNo >= numberofpages) {
+		if (pageNo >= numberofpages && pageNo != 0) {
 			return "redirect:/show-user-books/0";
 		}
 
