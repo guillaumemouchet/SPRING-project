@@ -34,8 +34,7 @@
 
 							<div class="form-group col-12">
 								<label for="Release" th:text="Release"></label>
-								<input type="date" class="form-control" th:required="required"
-									th:field="*{release}" />
+								<input type="date" class="form-control" th:required="required" th:field="*{release}" />
 							</div>
 
 							<input type="hidden" name="type" th:if="${isNew}" th:value="new" />
@@ -78,10 +77,13 @@
 						<td th:text="${book.editor}" />
 						<td th:text="${book.release}" />
 						<td th:if="${isGlobal}">
-							<form action="#" th:action="@{/add-collection}" th:object="${book}" method="post">
-								<input type="hidden" th:value="${book.id}" name="id" />
-								<button type="submit" class="btn btn-success">Ajouter</button>
-							</form>
+							<div th:if="${userSession.getAttribute('user')}!=null" class="nav-item">
+
+								<form action="#" th:action="@{/add-collection}" th:object="${book}" method="post">
+									<input type="hidden" th:value="${book.id}" name="id" />
+									<button type="submit" class="btn btn-success">Ajouter</button>
+								</form>
+							</div>
 						</td>
 						<td th:if="!${isGlobal}">
 							<form action="#" th:action="@{/delete-user-book}" th:object="${book}" method="post">
@@ -92,7 +94,19 @@
 						</td>
 					</tr>
 				</table>
+				<div th:if="${isGlobal}">
+				<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
+					<a href="/show-books" th:href="@{/show-books/{pageNo}(pageNo=${i})}" th:text="${i}"></a>
+				</th:block>
+				</div>
+				<div th:if="!${isGlobal}">
+				<th:block th:each="i: ${#numbers.sequence(0, number_of_page - 1)}">
+					<a href="/show-user-books" th:href="@{/show-user-books/{pageNo}(pageNo=${i})}" th:text="${i}"></a>
+				</th:block>
+				</div>
 			</div>
+
 		</div>
 	</div>
+</div>
 </div>

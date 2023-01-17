@@ -1,11 +1,14 @@
 package ch.hearc.jee2022.catalog.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import ch.hearc.jee2022.catalog.model.Book;
@@ -31,12 +34,20 @@ public class CatalogServiceImpl implements CatalogService {
 	public void startApplication() {
 
 		// create a Book
-		Book book = new Book("Maniefest", "Benjamin", "Payot", LocalDate.now());
-		Book book2 = new Book("Chevalier", "Vincent", "Payot", LocalDate.now());
-		Book book3 = new Book("Ewilan", "Titus", "Franz", LocalDate.now());
-
+		Book book = new Book("Maniefest", "Benjamin", "0", LocalDate.now());
+		Book book2 = new Book("Chevalier", "Vincent", "1", LocalDate.now());
+		Book book3 = new Book("Ewilan", "Titus", "2", LocalDate.now());
+		Book book4 = new Book("Maniefest", "Benjamin", "3", LocalDate.now());
+		Book book5 = new Book("Chevalier", "Vincent", "4", LocalDate.now());
+		Book book6 = new Book("Ewilan", "Titus", "5", LocalDate.now());
+		Book book7 = new Book("Maniefest", "Benjamin", "6", LocalDate.now());
+		Book book8 = new Book("Chevalier", "Vincent", "7", LocalDate.now());
+		Book book9 = new Book("Ewilan", "Titus", "8", LocalDate.now());
+		Book book10 = new Book("Maniefest", "Benjamin", "9", LocalDate.now());
+		Book book11= new Book("Chevalier", "Vincent", "10", LocalDate.now());
+		Book book12 = new Book("Ewilan", "Titus", "11", LocalDate.now());
 		// save the Book
-		bookRepository.saveAll(Arrays.asList(book, book2, book3));
+		bookRepository.saveAll(Arrays.asList(book, book2, book3, book4, book5, book6,book7,book8,book9,book10,book11,book12));
 
 		Utilisateur user = new Utilisateur("Guillaume", "123"); // passwordEncoder.encode("123"));
 
@@ -45,7 +56,7 @@ public class CatalogServiceImpl implements CatalogService {
 		utilisateurRepository.save(user);
 
 		// add courses to the student
-		user.getBooks().addAll(Arrays.asList(book));
+		user.getBooks().addAll(Arrays.asList(book, book5, book2, book3, book4, book6,book7,book8,book9,book10,book11,book12));
 
 		// update the student
 		utilisateurRepository.save(user);
@@ -56,10 +67,23 @@ public class CatalogServiceImpl implements CatalogService {
 		bookRepository.save(book);
 	}
 
+	@Override
 	public List<Book> getAllBooksFromCatalog() {
 		List<Book> result = new ArrayList<Book>();
 		bookRepository.findAll().forEach(result::add);
 		return result;
+	}
+
+	public List<Book> getAllBooksFromCatalog(int pageNo) {
+
+		int page_size = 5;
+		PageRequest paging = PageRequest.of(pageNo, page_size, // 0 + (pageNo - 1) * page_size, page_size + (pageNo - 1)
+																// * page_size,
+				Sort.by("name").ascending());
+		Page<Book> page = bookRepository.findAll(paging);
+
+		// Retrieve the items
+		return page.toList();
 	}
 
 	public void deleteBook(Long id) {
@@ -90,6 +114,7 @@ public class CatalogServiceImpl implements CatalogService {
 	public List<Utilisateur> getAllUserFromCatalog() {
 		List<Utilisateur> result = new ArrayList<Utilisateur>();
 		utilisateurRepository.findAll().forEach(result::add);
+
 		return result;
 
 	}
@@ -130,9 +155,24 @@ public class CatalogServiceImpl implements CatalogService {
 
 	public List<Book> getAllBooksFromUser(Long userId) {
 
-		Utilisateur user = utilisateurRepository.findById(userId).get(); // TODO change to connected user
+		Utilisateur user = utilisateurRepository.findById(userId).get();
 		return user.getBooks().stream().toList();
 
+	}
+
+	public List<Book> getAllBooksFromUser(Long userId, int pageNo) {
+
+		Utilisateur user = utilisateurRepository.findById(userId).get();
+		int page_size = 5;
+		List<Book> page = user.getBooks().stream().skip(pageNo * page_size).toList();
+		try {
+			page = page.subList(0, page_size);
+
+		} catch (Exception e) {
+		}
+
+		System.out.println(page);
+		return page;
 	}
 
 }

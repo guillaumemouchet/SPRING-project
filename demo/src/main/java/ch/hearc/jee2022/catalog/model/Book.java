@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-@Entity
+@Entity(name = "book")
 @Table(name = "books")
 public class Book {
 
@@ -33,7 +33,7 @@ public class Book {
 		return utilisateurs;
 	}
 
-	public Book(String author, String name, String editor, LocalDate release) {
+	public Book(String name, String author, String editor, LocalDate release) {
 		this.author = author;
 		this.name = name;
 		this.editor = editor;

@@ -14,6 +14,7 @@ public interface CatalogService {
 	public void addBookToCatalog(Book book);
 
 	public List<Book> getAllBooksFromCatalog();
+	public List<Book> getAllBooksFromCatalog(int pageNo);
 
 	public void deleteBook(Long id);
 
@@ -41,5 +42,7 @@ public interface CatalogService {
 	public void removeBookFromUser(Long book_id, Long utilisateur_id);
 
 	public List<Book> getAllBooksFromUser(Long utilisateur_id);
+	public List<Book> getAllBooksFromUser(Long userId, int pageNo);
+
 
 }

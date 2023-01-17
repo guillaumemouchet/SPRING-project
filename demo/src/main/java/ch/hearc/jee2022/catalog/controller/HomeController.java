@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -75,13 +76,17 @@ public class HomeController {
 	public String showCreateBook(Model model) {
 		model.addAttribute("userSession", userSession);
 
+		if (userSession.getAttribute("user") == null) {
+			return "redirect:/accueil";
+		}
+
 		model.addAttribute("book", new Book());
 		model.addAttribute("showAcc", Boolean.FALSE);
 		model.addAttribute("showNew", Boolean.TRUE);
 
 		model.addAttribute("isNew", Boolean.TRUE);
 		model.addAttribute("isEdit", Boolean.FALSE);
-		return "/accueil";
+		return "accueil";
 	}
 
 	@PostMapping(value = "/create-user")
@@ -129,7 +134,7 @@ public class HomeController {
 			userSession.setAttribute("user", utilisateur.getId());
 		}
 
-		return "redirect:/show-user-books";
+		return "redirect:/show-user-books/0";
 	}
 
 	@PostMapping(value = "/save-book")
@@ -143,7 +148,7 @@ public class HomeController {
 			catalogService.addBookToCatalog(book);
 		}
 
-		return "redirect:/show-books";
+		return "redirect:/show-books/0";
 	}
 
 	@PostMapping(value = "/add-collection")
@@ -155,10 +160,10 @@ public class HomeController {
 			catalogService.addBookToUser(book.getId(), (long) (userSession.getAttribute("user")));
 		} catch (Exception e) {
 			// TODO: handle exception
-			return "redirect:/show-books";
+			return "redirect:/show-books/0";
 
 		}
-		return "redirect:/show-books";
+		return "redirect:/show-books/0";
 	}
 
 	@PostMapping(value = "/delete-user-book")
@@ -169,34 +174,46 @@ public class HomeController {
 		try {
 			catalogService.removeBookFromUser(book.getId(), (long) (userSession.getAttribute("user")));
 		} catch (Exception e) {
-			return "redirect:/show-user-books";
+			return "redirect:/show-user-books/0";
 
 		}
 		// user
 
-		return "redirect:/show-user-books";
+		return "redirect:/show-user-books/0";
 	}
 
-	@GetMapping(value = { "/show-books" })
-	public String showBooks(Model model) {
+	@GetMapping(value = { "/show-books/{pageNo}" })
+	public String showBooks(Model model, @PathVariable int pageNo) {
 		model.addAttribute("userSession", userSession);
 
-		model.addAttribute("books", catalogService.getAllBooksFromCatalog());
+		model.addAttribute("books", catalogService.getAllBooksFromCatalog(pageNo));
+		int numberofbooks = catalogService.getAllBooksFromCatalog().size();
+		System.out.println(numberofbooks);
+		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
+		System.out.println(numberofpages);
+		model.addAttribute("number_of_page", numberofpages);
+
 		model.addAttribute("isGlobal", Boolean.TRUE);
 		return "showBook";
 	}
 
-	@GetMapping(value = { "/show-user-books" })
-	public String showUserBooks(Model model) {
+	@GetMapping(value = { "/show-user-books/{pageNo}" })
+	public String showUserBooks(Model model, @PathVariable int pageNo) {
 		model.addAttribute("userSession", userSession);
-
 		model.addAttribute("isGlobal", Boolean.FALSE);
 
-		try {
-			model.addAttribute("books", catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user"))));
-		} catch (Exception e) {
+		
+		if (userSession.getAttribute("user") == null) {
 			return "redirect:/accueil";
 		}
+		int numberofbooks = catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user"))).size();
+		System.out.println(numberofbooks);
+		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
+		System.out.println(numberofpages);
+		model.addAttribute("number_of_page", numberofpages);
+		model.addAttribute("books",
+				catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user")), pageNo));
+
 		return "showBook";
 	}
 
