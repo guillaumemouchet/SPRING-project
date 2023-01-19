@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.hearc.jee2022.catalog.model.Book;
 import ch.hearc.jee2022.catalog.model.Utilisateur;
 import ch.hearc.jee2022.catalog.service.CatalogService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
