@@ -93,16 +93,25 @@ public class HomeController {
 			@RequestParam String conPassword) {
 		model.addAttribute("userSession", userSession);
 
-		// Controller qu'il existe
-
-		// new Utilisateur // Controler les mots de passes
-		if (user.getPassword().equals(conPassword)) {
-			catalogService.addUserToCatalog(user);
-			userSession.setAttribute("user", user.getId());
-			System.out.println("Create Session");
+		//Regarde si le user existe
+		Utilisateur utilisateur = catalogService.getUserByName(user.getName());
+		
+		if(utilisateur == null) // Nouveau user
+		{
+			// new Utilisateur // Controler les mots de passes
+			if (user.getPassword().equals(conPassword)) {
+				catalogService.addUserToCatalog(user);
+				userSession.setAttribute("user", user.getId());
+				System.out.println("Create Session");
+			}
+			return "redirect:/accueil";
 		}
+		//existe déjà donc créer un nouveau compte
+		return "redirect:/create-account";
 
-		return "redirect:/accueil";
+		
+
+		
 
 	}
 
