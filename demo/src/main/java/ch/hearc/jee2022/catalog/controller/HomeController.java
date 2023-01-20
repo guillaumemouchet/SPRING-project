@@ -28,6 +28,8 @@ public class HomeController {
 
 	@GetMapping(value = { "/", "/accueil" })
 	public String showAccueilPage(Model model) {
+		
+		//Fill DB with values on first load
 		if (first) {
 			first = Boolean.FALSE;
 			catalogService.startApplication();
@@ -41,6 +43,7 @@ public class HomeController {
 	@GetMapping(value = { "/login" })
 	public String showLoginPage(Model model) {
 
+		//Check if the user is already connected
 		if (userSession.getAttribute("user") == null) {
 			model.addAttribute("utilisateur", new Utilisateur());
 
@@ -75,6 +78,7 @@ public class HomeController {
 	public String showCreateBook(Model model) {
 		model.addAttribute("userSession", userSession);
 
+		//Check if the user is already connected
 		if (userSession.getAttribute("user") == null) {
 			return "redirect:/accueil";
 		}
@@ -93,20 +97,23 @@ public class HomeController {
 			@RequestParam String conPassword) {
 		model.addAttribute("userSession", userSession);
 
-		//Regarde si le user existe
+		//Try to get the name of the new user
 		Utilisateur utilisateur = catalogService.getUserByName(user.getName());
 		
-		if(utilisateur == null) // Nouveau user
+		//If no user where found we can create a new on
+		if(utilisateur == null)
 		{
-			// new Utilisateur // Controler les mots de passes
+			//Check the passwords
 			if (user.getPassword().equals(conPassword)) {
 				catalogService.addUserToCatalog(user);
 				userSession.setAttribute("user", user.getId());
 				System.out.println("Create Session");
+				return "redirect:/accueil";
 			}
-			return "redirect:/accueil";
+			//passwords where wrong, go back to the create account page
+			return "redirect:/create-account";
 		}
-		//existe déjà donc créer un nouveau compte
+		//User was already found can't create a new one
 		return "redirect:/create-account";
 
 		
@@ -121,13 +128,12 @@ public class HomeController {
 		try {
 			utilisateur = catalogService.getUserByName(user.getName());
 
-		} catch (Exception e) { // User don't exist so no connection }
-			System.out.println("No");
+		} catch (Exception e) { // User don't exist so no connection
 			return "redirect:/login";
 
 		}
-		if (utilisateur.getPassword().equals(user.getPassword())) {
-			// C'est les bon mots de passes
+		
+		if (utilisateur.getPassword().equals(user.getPassword())) { //Same password can create the session
 			System.out.println("Create Session");
 
 			userSession.setAttribute("user", utilisateur.getId());
@@ -158,7 +164,6 @@ public class HomeController {
 		try {
 			catalogService.addBookToUser(book.getId(), (long) (userSession.getAttribute("user")));
 		} catch (Exception e) {
-			// TODO: handle exception
 			return "redirect:/show-books/0";
 
 		}
@@ -176,8 +181,6 @@ public class HomeController {
 			return "redirect:/show-user-books/0";
 
 		}
-		// user
-
 		return "redirect:/show-user-books/0";
 	}
 
@@ -185,14 +188,17 @@ public class HomeController {
 	public String showBooks(Model model, @PathVariable int pageNo) {
 		model.addAttribute("userSession", userSession);
 
+		//Get number of book to create how many pages we need
 		int numberofbooks = catalogService.getAllBooksFromCatalog().size();
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
 
-		if (pageNo >= numberofpages) {
+		if (pageNo >= numberofpages && pageNo != 0) { //check that pageNo is not to big
 			return "redirect:/show-books/0";
 		}
+		
 		model.addAttribute("books", catalogService.getAllBooksFromCatalog(pageNo));
 
+		//Pass number of page to create pagination href in view
 		model.addAttribute("number_of_page", numberofpages);
 
 		model.addAttribute("isGlobal", Boolean.TRUE);
@@ -204,14 +210,20 @@ public class HomeController {
 		model.addAttribute("userSession", userSession);
 		model.addAttribute("isGlobal", Boolean.FALSE);
 
+		//Check user is connected
 		if (userSession.getAttribute("user") == null) {
 			return "redirect:/accueil";
 		}
+		
+		//Get number of book to create how many pages we need
 		int numberofbooks = catalogService.getAllBooksFromUser((long) (userSession.getAttribute("user"))).size();
 		int numberofpages = (int) Math.ceil(numberofbooks / 5.0);
-		if (pageNo >= numberofpages && pageNo != 0) {
+		
+		if (pageNo >= numberofpages && pageNo != 0) { //check that pageNo is not to big
 			return "redirect:/show-user-books/0";
 		}
+
+		//Pass number of page to create pagination href in view
 
 		model.addAttribute("number_of_page", numberofpages);
 		model.addAttribute("books",

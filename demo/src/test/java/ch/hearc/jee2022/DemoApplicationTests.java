@@ -28,7 +28,6 @@ class DemoApplicationTests {
 	@Test
 	public void testPagination() {
 
-		// create a Book
 		Book book = new Book("Maniefest", "Benjamin", "0", LocalDate.now());
 		Book book2 = new Book("Chevalier", "Vincent", "1", LocalDate.now());
 		Book book3 = new Book("Ewilan", "Titus", "2", LocalDate.now());
@@ -41,21 +40,18 @@ class DemoApplicationTests {
 		Book book10 = new Book("Maniefest", "Benjamin", "9", LocalDate.now());
 		Book book11 = new Book("Chevalier", "Vincent", "10", LocalDate.now());
 		Book book12 = new Book("Ewilan", "Titus", "11", LocalDate.now());
-		// save the Book
+		
 		bookRepository.saveAll(
 				Arrays.asList(book, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12));
 
 		Utilisateur user = new Utilisateur("Guillaume", "123"); 
 
 		System.out.println(user);
-		// save courses
 		utilisateurRepository.save(user);
 
-		// add courses to the student
 		user.getBooks().addAll(
 				Arrays.asList(book, book5, book2, book3, book4, book6, book7, book8, book9, book10, book11, book12));
 
-		// update the student
 		utilisateurRepository.save(user);
 		
 		

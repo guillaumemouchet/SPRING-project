@@ -35,7 +35,7 @@ public interface CatalogService {
 	public Utilisateur getUserByName(String name);
 
 
-	// User_book
+	// Utilisateur_book
 
 	public void addBookToUser(Long book_id, Long utilisateur_id);
 

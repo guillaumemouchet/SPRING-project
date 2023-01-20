@@ -31,26 +31,25 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	HttpSession userSession;
 
-	// Décommenter pour le rendu final !!
 	public void startApplication() {
 
-		// create a Book
+		// create Books
 		Book book = new Book("Maniefestation en France ?", "François Beaujoli", "Payot", LocalDate.now());
 		Book book2 = new Book("Chevalier D'émeraude 1", "Mireille Magie", "Le rat conteur", LocalDate.now());
 		Book book3 = new Book("La Quête Ewilan", "Miguel Richard", "A son conte", LocalDate.now());
-		// save the Book
+		// save the Books
 		bookRepository.saveAll(Arrays.asList(book, book2, book3));
 
+		//Create user
 		Utilisateur user = new Utilisateur("Guillaume", "123");
 
-		System.out.println(user);
-		// save courses
+		// save user
 		utilisateurRepository.save(user);
 
-		// add courses to the student
+		// add book to the user
 		user.getBooks().addAll(Arrays.asList(book, book2));
 
-		// update the student
+		// update the user
 		utilisateurRepository.save(user);
 	}
 	
@@ -73,7 +72,6 @@ public class CatalogServiceImpl implements CatalogService {
 				"name", "id");
 		Page<Book> page = bookRepository.findAll(paging);
 
-		// Retrieve the items
 		return page.toList();
 	}
 
