@@ -111,8 +111,6 @@ public class HomeController {
 
 		
 
-		
-
 	}
 
 	@PostMapping(value = "/save-user")
@@ -129,7 +127,7 @@ public class HomeController {
 
 		}
 		if (utilisateur.getPassword().equals(user.getPassword())) {
-			// C'set les bon mots de passes
+			// C'est les bon mots de passes
 			System.out.println("Create Session");
 
 			userSession.setAttribute("user", utilisateur.getId());
