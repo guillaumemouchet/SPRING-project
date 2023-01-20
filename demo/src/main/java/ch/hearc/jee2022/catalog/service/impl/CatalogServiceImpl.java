@@ -31,59 +31,28 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	HttpSession userSession;
 
-	// Used for massive tests for pagination
+	// Décommenter pour le rendu final !!
 	public void startApplication() {
 
 		// create a Book
-		Book book = new Book("Maniefest", "Benjamin", "0", LocalDate.now());
-		Book book2 = new Book("Chevalier", "Vincent", "1", LocalDate.now());
-		Book book3 = new Book("Ewilan", "Titus", "2", LocalDate.now());
-		Book book4 = new Book("Maniefest", "Benjamin", "3", LocalDate.now());
-		Book book5 = new Book("Chevalier", "Vincent", "4", LocalDate.now());
-		Book book6 = new Book("Ewilan", "Titus", "5", LocalDate.now());
-		Book book7 = new Book("Maniefest", "Benjamin", "6", LocalDate.now());
-		Book book8 = new Book("Chevalier", "Vincent", "7", LocalDate.now());
-		Book book9 = new Book("Ewilan", "Titus", "8", LocalDate.now());
-		Book book10 = new Book("Maniefest", "Benjamin", "9", LocalDate.now());
-		Book book11= new Book("Chevalier", "Vincent", "10", LocalDate.now());
-		Book book12 = new Book("Ewilan", "Titus", "11", LocalDate.now());
+		Book book = new Book("Maniefestation en France ?", "François Beaujoli", "Payot", LocalDate.now());
+		Book book2 = new Book("Chevalier D'émeraude 1", "Mireille Magie", "Le rat conteur", LocalDate.now());
+		Book book3 = new Book("La Quête Ewilan", "Miguel Richard", "A son conte", LocalDate.now());
 		// save the Book
-		bookRepository.saveAll(Arrays.asList(book, book2, book3, book4, book5, book6,book7,book8,book9,book10,book11,book12));
+		bookRepository.saveAll(Arrays.asList(book, book2, book3));
 
-		Utilisateur user = new Utilisateur("Guillaume", "123"); // passwordEncoder.encode("123"));
+		Utilisateur user = new Utilisateur("Guillaume", "123");
 
 		System.out.println(user);
 		// save courses
 		utilisateurRepository.save(user);
 
 		// add courses to the student
-		user.getBooks().addAll(Arrays.asList(book, book5, book2, book3, book4, book6,book7,book8,book9,book10,book11,book12));
+		user.getBooks().addAll(Arrays.asList(book, book2));
 
 		// update the student
 		utilisateurRepository.save(user);
 	}
-	// Décommenter pour le rendu final !!
-//	public void startApplication() {
-//
-//		// create a Book
-//		Book book = new Book("Maniefestation en France ?", "François Beaujoli", "Payot", LocalDate.now());
-//		Book book2 = new Book("Chevalier D'émeraude 1", "Mireille Magie", "Le rat conteur", LocalDate.now());
-//		Book book3 = new Book("La Quête Ewilan", "Miguel Richard", "A son conte", LocalDate.now());
-//		// save the Book
-//		bookRepository.saveAll(Arrays.asList(book, book2, book3));
-//
-//		Utilisateur user = new Utilisateur("Guillaume", "123");
-//
-//		System.out.println(user);
-//		// save courses
-//		utilisateurRepository.save(user);
-//
-//		// add courses to the student
-//		user.getBooks().addAll(Arrays.asList(book, book2));
-//
-//		// update the student
-//		utilisateurRepository.save(user);
-//	}
 	
 	// Book
 	public void addBookToCatalog(Book book) {
