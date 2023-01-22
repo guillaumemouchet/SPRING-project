@@ -124,11 +124,10 @@ public class HomeController {
 	public String saveUserLogin(@ModelAttribute Utilisateur user, BindingResult errors, Model model) {
 		model.addAttribute("userSession", userSession);
 
-		Utilisateur utilisateur = null;
-		try {
-			utilisateur = catalogService.getUserByName(user.getName());
+		Utilisateur utilisateur = catalogService.getUserByName(user.getName());
 
-		} catch (Exception e) { // User don't exist so no connection
+		if(utilisateur == null)
+		{
 			return "redirect:/login";
 
 		}

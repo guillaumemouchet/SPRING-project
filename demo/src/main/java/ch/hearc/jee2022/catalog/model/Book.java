@@ -65,12 +65,6 @@ public class Book {
 		return id;
 	}
 
-	@Override
-	public String toString() {
-		return "Book [id=" + id + ", author=" + author + ", name=" + name + ", editor=" + editor + ", release="
-				+ release + ", utilisateurs=" + utilisateurs + "]";
-	}
-
 	public String getAuthor() {
 		return author;
 	}
