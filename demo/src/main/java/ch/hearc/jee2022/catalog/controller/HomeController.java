@@ -1,6 +1,7 @@
 package ch.hearc.jee2022.catalog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -105,6 +106,9 @@ public class HomeController {
 		{
 			//Check the passwords
 			if (user.getPassword().equals(conPassword)) {
+				BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+
+				user.setPassword(bcrypt.encode(conPassword));
 				catalogService.addUserToCatalog(user);
 				userSession.setAttribute("user", user.getId());
 				System.out.println("Create Session");
@@ -131,8 +135,13 @@ public class HomeController {
 			return "redirect:/login";
 
 		}
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		
-		if (utilisateur.getPassword().equals(user.getPassword())) { //Same password can create the session
+		System.out.println(user.getPassword());
+		System.out.println(utilisateur.getPassword());
+		
+		if (bcrypt.matches(user.getPassword(), utilisateur.getPassword()))
+		{ //Same password can create the session
 			System.out.println("Create Session");
 
 			userSession.setAttribute("user", utilisateur.getId());

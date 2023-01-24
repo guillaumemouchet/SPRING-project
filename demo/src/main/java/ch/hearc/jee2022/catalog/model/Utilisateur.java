@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,8 +35,9 @@ public class Utilisateur {
 	private Set<Book> books = new HashSet<>();
 
 	public Utilisateur(String name, String password) {
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		this.name = name;
-		this.password = password;
+		this.password = bcrypt.encode(password);
 	}
 
 	public Utilisateur() {
@@ -82,6 +85,7 @@ public class Utilisateur {
 	}
 
 	public void setPassword(String password) {
+
 		this.password = password;
 	}
 
