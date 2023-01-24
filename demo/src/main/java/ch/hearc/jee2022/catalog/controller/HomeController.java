@@ -22,7 +22,6 @@ public class HomeController {
 
 	@Autowired
 	CatalogService catalogService;
-	public boolean first = Boolean.TRUE;
 
 	@Autowired
 	HttpSession userSession;
@@ -30,11 +29,6 @@ public class HomeController {
 	@GetMapping(value = { "/", "/accueil" })
 	public String showAccueilPage(Model model) {
 		
-		//Fill DB with values on first load
-		if (first) {
-			first = Boolean.FALSE;
-			catalogService.startApplication();
-		}
 		model.addAttribute("userSession", userSession);
 		model.addAttribute("showAcc", Boolean.TRUE);
 		model.addAttribute("showNew", Boolean.FALSE);
@@ -136,9 +130,7 @@ public class HomeController {
 
 		}
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-		
-		System.out.println(user.getPassword());
-		System.out.println(utilisateur.getPassword());
+
 		
 		if (bcrypt.matches(user.getPassword(), utilisateur.getPassword()))
 		{ //Same password can create the session

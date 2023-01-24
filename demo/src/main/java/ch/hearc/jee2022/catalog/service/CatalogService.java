@@ -7,9 +7,6 @@ import ch.hearc.jee2022.catalog.model.Utilisateur;
 
 public interface CatalogService {
 
-	// Commun
-	public void startApplication();
-
 	// Book
 	public void addBookToCatalog(Book book);
 
