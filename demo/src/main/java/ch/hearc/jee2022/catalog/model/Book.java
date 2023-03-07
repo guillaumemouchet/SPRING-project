@@ -89,6 +89,25 @@ public class Book {
 		this.author = author;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Book [id=");
+		builder.append(id);
+		builder.append(", author=");
+		builder.append(author);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", editor=");
+		builder.append(editor);
+		builder.append(", release=");
+		builder.append(release);
+		builder.append(", utilisateurs=");
+		builder.append(utilisateurs);
+		builder.append("]");
+		return builder.toString();
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
