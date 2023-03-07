@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -102,8 +104,6 @@ public class Book {
 		builder.append(editor);
 		builder.append(", release=");
 		builder.append(release);
-		builder.append(", utilisateurs=");
-		builder.append(utilisateurs);
 		builder.append("]");
 		return builder.toString();
 	}

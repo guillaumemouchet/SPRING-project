@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.hearc.jee2022.catalog.model.Book;
+import ch.hearc.jee2022.catalog.model.BookResponse;
+import ch.hearc.jee2022.catalog.model.UtilisateurResponse;
 import ch.hearc.jee2022.catalog.service.CatalogService;
 import jakarta.servlet.http.HttpSession;
 
@@ -25,22 +28,38 @@ public class ApiController {
 	HttpSession userSession;
 
 	@GetMapping("/book/{id}")
-	public void showBook(@PathVariable("id") int id) { // insert
+	public BookResponse showBook(@PathVariable("id") int id) { // insert
 		// Id starts at 1
 
-		Book book = catalogService.getBookById((long) id);
+		BookResponse book = new BookResponse(catalogService.getBookById((long) id));
 
 		System.out.println(book);
+		
+		return book;
+	}
+	
+	@GetMapping("/utilisateur/{id}")
+	public UtilisateurResponse showUtilisateur(@PathVariable("id") int id) { // insert
+		// Id starts at 1
+
+		UtilisateurResponse utilisateur = new UtilisateurResponse(catalogService.getUserById((long) id));
+
+		System.out.println(utilisateur);
+		
+		return utilisateur;
 	}
 
-	@DeleteMapping("/book/{id}")
-	public void deleteById(@PathVariable("id") int id) {
-		catalogService.deleteBook((long) id);
-	}
+
+//	@DeleteMapping("/book/{id}")
+//	public void deleteById(@PathVariable("id") int id) {
+//		catalogService.deleteBook((long) id);
+//	}
 
 	@PostMapping("/book")
-	public void newBook(@ModelAttribute Book book) {
+	public String newBook(@RequestBody Book book) {
+		System.out.println(book);
 		catalogService.addBookToCatalog(book);
+		return "200 : all good";
 	}
 
 	@PutMapping("/book/{id}")

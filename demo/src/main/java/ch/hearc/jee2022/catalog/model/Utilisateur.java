@@ -89,4 +89,19 @@ public class Utilisateur {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Utilisateur [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", books=");
+		builder.append(books);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
+
 }
