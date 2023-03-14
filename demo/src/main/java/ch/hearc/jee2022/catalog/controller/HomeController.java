@@ -35,6 +35,11 @@ public class HomeController {
 		return "accueil";
 	}
 
+	/*************************************************************
+	 * 
+	 *				Login + User
+	 *
+	 **************************************************************/
 	@GetMapping(value = { "/login" })
 	public String showLoginPage(Model model) {
 
@@ -69,24 +74,6 @@ public class HomeController {
 		return "login";
 	}
 
-	@GetMapping(value = { "/new-book" })
-	public String showCreateBook(Model model) {
-		model.addAttribute("userSession", userSession);
-
-		//Check if the user is already connected
-		if (userSession.getAttribute("user") == null) {
-			return "redirect:/accueil";
-		}
-
-		model.addAttribute("book", new Book());
-		model.addAttribute("showAcc", Boolean.FALSE);
-		model.addAttribute("showNew", Boolean.TRUE);
-
-		model.addAttribute("isNew", Boolean.TRUE);
-		model.addAttribute("isEdit", Boolean.FALSE);
-		return "accueil";
-	}
-
 	@PostMapping(value = "/create-user")
 	public String saveUserCreate(@ModelAttribute Utilisateur user, BindingResult errors, Model model,
 			@RequestParam String conPassword) {
@@ -113,9 +100,6 @@ public class HomeController {
 		}
 		//User was already found can't create a new one
 		return "redirect:/create-account";
-
-		
-
 	}
 
 	@PostMapping(value = "/save-user")
@@ -142,6 +126,11 @@ public class HomeController {
 		return "redirect:/show-user-books/0";
 	}
 
+	/*************************************************************
+	 * 
+	 *				Books
+	 *
+	 **************************************************************/
 	@PostMapping(value = "/save-book")
 	public String saveBeer(@ModelAttribute Book book, BindingResult errors, Model model, @RequestParam String type) {
 		model.addAttribute("userSession", userSession);
@@ -156,6 +145,29 @@ public class HomeController {
 		return "redirect:/show-books/0";
 	}
 
+	@GetMapping(value = { "/new-book" })
+	public String showCreateBook(Model model) {
+		model.addAttribute("userSession", userSession);
+
+		//Check if the user is already connected
+		if (userSession.getAttribute("user") == null) {
+			return "redirect:/accueil";
+		}
+
+		model.addAttribute("book", new Book());
+		model.addAttribute("showAcc", Boolean.FALSE);
+		model.addAttribute("showNew", Boolean.TRUE);
+
+		model.addAttribute("isNew", Boolean.TRUE);
+		model.addAttribute("isEdit", Boolean.FALSE);
+		return "accueil";
+	}
+
+	/*************************************************************
+	 * 
+	 *				Collections
+	 *
+	 **************************************************************/
 	@PostMapping(value = "/add-collection")
 	public String addToCollection(@ModelAttribute Book book, BindingResult errors, Model model) {
 		model.addAttribute("userSession", userSession);
@@ -183,6 +195,12 @@ public class HomeController {
 		}
 		return "redirect:/show-user-books/0";
 	}
+	
+	/*************************************************************
+	 * 
+	 *						Pagination
+	 *
+	 **************************************************************/
 
 	@GetMapping(value = { "/show-books/{pageNo}" })
 	public String showBooks(Model model, @PathVariable int pageNo) {
