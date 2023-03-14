@@ -1,6 +1,12 @@
 package ch.hearc.jee2022.catalog.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,17 +41,32 @@ public class ApiController {
 	/*************************************************************
 	 * 
 	 * Restfull Books
+	 * @throws URISyntaxException 
 	 *
 	 **************************************************************/
+//	@GetMapping("/book/{id}")
+//	public BookResponse showBook(@PathVariable("id") int id) { // insert
+//		// Id starts at 1
+//
+//		BookResponse book = new BookResponse(catalogService.getBookById((long) id));
+//
+//		System.out.println(book);
+//
+//		return book;
+//	}
+	
 	@GetMapping("/book/{id}")
-	public BookResponse showBook(@PathVariable("id") int id) { // insert
+	public ResponseEntity<BookResponse> showBook(@PathVariable("id") int id) throws URISyntaxException { // insert
 		// Id starts at 1
 
 		BookResponse book = new BookResponse(catalogService.getBookById((long) id));
 
 		System.out.println(book);
-
-		return book;
+		//URI location = new URI(""); Pas nécessaire pour un get, intéressant de préciser l'emplacement de la nouvelle ressource p.ex.
+		HttpHeaders responseHeader= new HttpHeaders();
+		//responseHeader.setLocation(location);
+		//responseHeader.set("MyResponseHeader", "MyValue"); Pas nécessaire, Spring le fait tout seul
+		return new ResponseEntity<BookResponse>(book, responseHeader, HttpStatus.FOUND);
 	}
 
 //	@DeleteMapping("/book/{id}")
