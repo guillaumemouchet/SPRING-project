@@ -32,8 +32,8 @@ public class CatalogServiceImpl implements CatalogService {
 	HttpSession userSession;
 	
 	// Book
-	public void addBookToCatalog(Book book) {
-		bookRepository.save(book);
+	public Book addBookToCatalog(Book book) {
+		return bookRepository.save(book);
 	}
 
 	@Override

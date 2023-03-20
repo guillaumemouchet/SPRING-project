@@ -8,7 +8,7 @@ import ch.hearc.jee2022.catalog.model.Utilisateur;
 public interface CatalogService {
 
 	// Book
-	public void addBookToCatalog(Book book);
+	public Book addBookToCatalog(Book book);
 
 	public List<Book> getAllBooksFromCatalog();
 	public List<Book> getAllBooksFromCatalog(int pageNo);

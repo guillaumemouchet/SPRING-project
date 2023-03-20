@@ -12,6 +12,7 @@ public class BookResponse {
 	private LocalDate release;
 	
 	
+	
 	public BookResponse(Book book)
 	{
 		this.id = book.getId();
